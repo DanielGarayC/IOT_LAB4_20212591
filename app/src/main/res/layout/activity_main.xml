@@ -42,7 +42,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Ícono derecho -->
     <ImageView
         android:id="@+id/iconRight"
         android:layout_width="32dp"
