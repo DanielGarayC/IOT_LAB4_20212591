@@ -3,6 +3,7 @@ package com.example.lab4_20212591.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,15 @@ import java.util.List;
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
 
     private List<Location> lista;
+    private OnItemClickListener listener;
 
-    public LocationAdapter(List<Location> lista) {
+    public interface OnItemClickListener {
+        void onItemClick(Location location);
+    }
+
+    public LocationAdapter(List<Location> lista, OnItemClickListener listener) {
         this.lista = lista;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,7 +39,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
         Location loc = lista.get(position);
         holder.tvNombre.setText(loc.getName());
-        holder.tvRegion.setText(loc.getRegion() + " - " + loc.getCountry());
+        holder.tvRegion.setText(loc.getRegion() + ", " + loc.getCountry());
+
+        // ✅ Delegar el clic al listener
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(loc));
     }
 
     @Override

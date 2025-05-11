@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FutureFragment">
+    android:padding="16dp"
+    android:background="@color/bg">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Búsqueda de Pronósticos"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/etCiudad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="idLocacion"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:textSize="12sp"
+
+        android:inputType="text"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/etDias"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <EditText
+        android:id="@+id/etDias"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="día de interés"
+        android:textColor="@color/black"
+        android:inputType="number"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:textSize="12sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="@id/etCiudad"
+        app:layout_constraintBottom_toBottomOf="@id/etCiudad"
+        app:layout_constraintStart_toEndOf="@id/etCiudad"
+        app:layout_constraintEnd_toStartOf="@id/btnBuscar"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBuscar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/colorOnSecondary"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/search_icon"
+        app:iconTint="@color/white"
+        app:iconPadding="8dp"
+        app:iconGravity="textStart"
+        app:layout_constraintTop_toTopOf="@id/etCiudad"
+        app:layout_constraintBottom_toBottomOf="@id/etCiudad"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPronostico"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/etCiudad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

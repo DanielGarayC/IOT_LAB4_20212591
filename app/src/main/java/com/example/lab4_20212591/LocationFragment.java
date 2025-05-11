@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +31,6 @@ public class LocationFragment extends Fragment {
     EditText etBuscar;
     Button btnBuscar;
     RecyclerView rvLocations;
-    LocationAdapter adapter;
 
     @Nullable
     @Override
@@ -64,7 +64,13 @@ public class LocationFragment extends Fragment {
                     @Override
                     public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            adapter = new LocationAdapter(response.body());
+                            LocationAdapter adapter = new LocationAdapter(response.body(), location -> {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("locationUrl", location.getUrl());
+
+                                NavHostFragment.findNavController(LocationFragment.this)
+                                        .navigate(R.id.action_locationFragment_to_forecasterFragment, bundle);
+                            });
                             rvLocations.setAdapter(adapter);
                         }
                     }

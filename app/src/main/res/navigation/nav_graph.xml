@@ -9,9 +9,13 @@
         android:name="com.example.lab4_20212591.LocationFragment"
         android:label="Ubicaciones" />
 
+    <action
+        android:id="@+id/action_locationFragment_to_forecasterFragment"
+        app:destination="@id/forecasterFragment" />
+
     <fragment
-        android:id="@+id/pronosticoFragment"
-        android:name="com.example.lab4_20212591.PronosticoFragment"
+        android:id="@+id/forecasterFragment"
+        android:name="com.example.lab4_20212591.ForecasterFragment"
         android:label="Pronóstico" />
 
     <fragment

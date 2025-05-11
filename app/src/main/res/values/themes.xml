@@ -3,7 +3,15 @@
     <style name="Base.Theme.Lab4_20212591" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="android:statusBarColor">@color/colorOnSecondary</item>
+
+        <item name="colorSecondary">@color/celeste</item>
     </style>
 
     <style name="Theme.Lab4_20212591" parent="Base.Theme.Lab4_20212591" />
+    <style name="Widget.MyBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@android:color/white</item>
+    </style>
 </resources>

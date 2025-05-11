@@ -15,4 +15,10 @@ public interface WeatherApiService {
             @Query("key") String apiKey,
             @Query("q") String location
     );
+    @GET("forecast.json")
+    Call<ForecastResponse> getForecast(
+            @Query("key") String apiKey,
+            @Query("q") String location,
+            @Query("days") int days
+    );
 }
