@@ -15,18 +15,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/iconLeft"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/snow_icon"
+        android:contentDescription="Icono izquierdo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitulo"
+        app:layout_constraintEnd_toStartOf="@+id/tvTitulo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"/>
+
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tele-Weather"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textColorLink="#6DD8E7"
+        android:layout_marginTop="10sp"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Ícono derecho -->
+    <ImageView
+        android:id="@+id/iconRight"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/snow_icon"
+        android:contentDescription="Icono derecho"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitulo"
+        app:layout_constraintStart_toEndOf="@+id/tvTitulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"/>
 
     <ImageView
         android:id="@+id/imgClima1"
