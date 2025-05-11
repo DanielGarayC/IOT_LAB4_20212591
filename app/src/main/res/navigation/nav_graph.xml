@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/locationFragment">
+
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.example.lab4_20212591.LocationFragment"
+        android:label="Ubicaciones" />
+
+    <fragment
+        android:id="@+id/pronosticoFragment"
+        android:name="com.example.lab4_20212591.PronosticoFragment"
+        android:label="Pronóstico" />
+
+    <fragment
+        android:id="@+id/futureFragment"
+        android:name="com.example.lab4_20212591.FutureFragment"
+        android:label="Futuro" />
+</navigation>
