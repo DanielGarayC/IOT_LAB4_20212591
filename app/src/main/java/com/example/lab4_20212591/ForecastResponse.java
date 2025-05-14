@@ -1,5 +1,6 @@
 package com.example.lab4_20212591;
 
+import com.example.lab4_20212591.model.ForecastDay;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

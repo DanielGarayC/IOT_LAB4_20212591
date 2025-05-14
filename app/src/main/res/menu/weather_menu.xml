@@ -2,7 +2,7 @@
     <item
         android:id="@+id/locationFragment"
         android:icon="@drawable/map_icon"
-        android:title="Ubicaciones"/>
+        android:title="Locations"/>
     <item
         android:id="@+id/forecasterFragment"
         android:icon="@drawable/weather_icon"

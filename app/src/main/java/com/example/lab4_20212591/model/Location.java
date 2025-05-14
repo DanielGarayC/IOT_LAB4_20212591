@@ -1,7 +1,8 @@
 package com.example.lab4_20212591.model;
 
 public class Location {
-    private int id;
+    //Para evitar problemas y como no se usan operaciones se usa String para la ID
+    private String id;
     private String name;
     private String region;
     private String country;
@@ -9,6 +10,9 @@ public class Location {
     private double lon;
     private String url;
 
+    public String getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }

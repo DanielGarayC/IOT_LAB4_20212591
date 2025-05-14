@@ -1,4 +1,4 @@
-package com.example.lab4_20212591;
+package com.example.lab4_20212591.model;
 
 public class ForecastDay {
     private String date;

@@ -2,63 +2,125 @@ package com.example.lab4_20212591;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FutureFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.lab4_20212591.adapter.FutureAdapter;
+import com.google.android.material.button.MaterialButton;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class FutureFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    EditText etCiudad, etFecha;
+    MaterialButton btnBuscar;
+    RecyclerView rvPronostico;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FutureFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FutureFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FutureFragment newInstance(String param1, String param2) {
-        FutureFragment fragment = new FutureFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_future, container, false);
+
+        etCiudad = view.findViewById(R.id.etCiudad);
+        etFecha  = view.findViewById(R.id.etDias);
+        btnBuscar = view.findViewById(R.id.btnBuscar);
+        rvPronostico = view.findViewById(R.id.rvPronostico);
+        rvPronostico.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        btnBuscar.setOnClickListener(v -> {
+            String id = etCiudad.getText().toString().trim();
+            String fecha = etFecha.getText().toString().trim();
+
+            if (id.isEmpty() || fecha.isEmpty()) {
+                Toast.makeText(getContext(), "Completa ambos campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Validación de formato de fecha :D
+            if (!fecha.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                Toast.makeText(getContext(), "Formato de fecha inválido (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            //Validación para que sea un pronóstico de un dia lejano (mayor a 14 días)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);
+
+            try {
+                Date fechaIngresada = sdf.parse(fecha);
+                Calendar hoy = Calendar.getInstance();
+
+                Calendar minimo = Calendar.getInstance();
+                minimo.add(Calendar.DAY_OF_YEAR, 14); // mínimo 14 días en adelante
+
+                Calendar maximo = Calendar.getInstance();
+                maximo.add(Calendar.DAY_OF_YEAR, 300); // máximo 300 días en adelante
+
+                if (fechaIngresada.before(minimo.getTime()) || fechaIngresada.after(maximo.getTime())) {
+                    Toast.makeText(getContext(),
+                            "La fecha debe ser entre " +
+                                    sdf.format(minimo.getTime()) + " y " +
+                                    sdf.format(maximo.getTime()),
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+            } catch (ParseException e) {
+                Toast.makeText(getContext(), "Fecha inválida. Usa el formato YYYY-MM-DD", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            buscarPronosticoFuturo(id, fecha);
+        });
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_future, container, false);
+    private void buscarPronosticoFuturo(String ciudadId, String fecha) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.weatherapi.com/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WeatherApiService api = retrofit.create(WeatherApiService.class);
+        api.getFuture("ec24b1c6dd8a4d528c1205500250305", "id:" + ciudadId, fecha)
+                .enqueue(new Callback<FutureResponse>() {
+                    @Override
+                    public void onResponse(Call<FutureResponse> call, Response<FutureResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<FutureResponse.Hour> horas = response.body()
+                                    .getForecast()
+                                    .getForecastday().get(0)
+                                    .getHour();
+                            rvPronostico.setAdapter(new FutureAdapter(horas));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<FutureResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
     }
 }
